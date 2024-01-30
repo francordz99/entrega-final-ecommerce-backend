@@ -1,0 +1,46 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Products API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /products:
+    get:
+      summary: "Obtener productos"
+      tags:
+        - "Products"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Productos obtenidos correctamente"
+definitions:
+  Product:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+        minimum: 0
+      thumbnail:
+        type: string
+      code:
+        type: string
+      stock:
+        type: number
+        minimum: 0
+      category:
+        type: string
+      owner:
+        type: string
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization

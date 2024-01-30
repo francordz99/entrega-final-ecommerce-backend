@@ -1,0 +1,138 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Admin API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /admin:
+    get:
+      summary: "Renderizar la página de administrador"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Página de administrador renderizada correctamente"
+  /admin/getProduct:
+    get:
+      summary: "Obtener información del producto"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      parameters:
+        - name: code
+          in: query
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "Página de administrador renderizada con información del producto"
+  /admin/addProduct:
+    post:
+      summary: "Agregar un nuevo producto"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          description: "Datos del nuevo producto"
+          schema:
+            $ref: "#/definitions/ProductInput"
+      responses:
+        "200":
+          description: "Producto agregado correctamente"
+  /admin/editProduct:
+    put:
+      summary: "Editar un producto existente"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          description: "Datos del producto actualizado"
+          schema:
+            $ref: "#/definitions/ProductInput"
+      responses:
+        "200":
+          description: "Producto editado correctamente"
+  /admin/deleteProduct:
+    delete:
+      summary: "Eliminar un producto"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          description: "Datos del producto a eliminar"
+          schema:
+            $ref: "#/definitions/ProductInput"
+      responses:
+        "200":
+          description: "Producto eliminado correctamente"
+  /admin/editPermissions:
+    put:
+      summary: "Editar permisos de usuario"
+      tags:
+        - "Admin"
+      security:
+        - tokenAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: permissions
+          description: "Datos de edición de permisos"
+          schema:
+            $ref: "#/definitions/PermissionsInput"
+      responses:
+        "200":
+          description: "Permisos actualizados correctamente"
+definitions:
+  ProductInput:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+        minimum: 0
+      thumbnail:
+        type: string
+      code:
+        type: string
+      stock:
+        type: number
+        minimum: 0
+      category:
+        type: string
+  PermissionsInput:
+    type: object
+    properties:
+      email:
+        type: string
+      permissionLevel:
+        type: string
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization

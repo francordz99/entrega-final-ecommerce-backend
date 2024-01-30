@@ -1,0 +1,127 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Shopping Cart API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /cart/addProductToCart/{productId}:
+    put:
+      summary: "Agregar producto al carrito"
+      tags:
+        - "Cart"
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Producto agregado al carrito con éxito"
+  /cart/editProductQuantity/{productId}:
+    put:
+      summary: "Editar cantidad de producto en el carrito"
+      tags:
+        - "Cart"
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: quantity
+          description: "Nueva cantidad del producto"
+          type: object
+          properties:
+            quantity:
+              type: number
+              minimum: 1
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Cantidad del producto actualizada correctamente"
+  /cart:
+    get:
+      summary: "Obtener productos del carrito"
+      tags:
+        - "Cart"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Productos del carrito obtenidos correctamente"
+  /cart/buyItems:
+    post:
+      summary: "Comprar productos en el carrito"
+      tags:
+        - "Cart"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: total
+          description: "Total de la compra"
+          type: object
+          properties:
+            total:
+              type: number
+              minimum: 0
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Compra realizada con éxito"
+  /cart/deleteProductFromCart/{productId}:
+    delete:
+      summary: "Eliminar producto del carrito"
+      tags:
+        - "Cart"
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Producto eliminado del carrito con éxito"
+definitions:
+  Product:
+    type: object
+    properties:
+      _id:
+        type: string
+      title:
+        type: string
+      thumbnail:
+        type: string
+      price:
+        type: number
+  CartItem:
+    type: object
+    properties:
+      product:
+        $ref: "#/definitions/Product"
+      quantity:
+        type: number
+        minimum: 1
+  Cart:
+    type: object
+    properties:
+      email:
+        type: string
+      products:
+        type: array
+        items:
+          $ref: "#/definitions/CartItem"
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization

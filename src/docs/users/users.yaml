@@ -1,0 +1,97 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Users API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /profile:
+    get:
+      summary: "Obtener información del perfil"
+      tags:
+        - "Users"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Información del perfil obtenida correctamente"
+    put:
+      summary: "Editar información del perfil"
+      tags:
+        - "Users"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Información del perfil actualizada correctamente"
+  /profile/premiumPanel:
+    get:
+      summary: "Obtener panel premium"
+      tags:
+        - "Users"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Panel premium obtenido correctamente"
+    post:
+      summary: "Agregar producto premium"
+      tags:
+        - "Users"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Producto premium agregado correctamente"
+    delete:
+      summary: "Eliminar producto premium"
+      tags:
+        - "Users"
+      security:
+        - tokenAuth: []
+      parameters:
+        - name: "code"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Producto premium eliminado correctamente"
+definitions:
+  UserInfo:
+    type: object
+    properties:
+      nombre:
+        type: string
+      apellido:
+        type: string
+      edad:
+        type: number
+      celular:
+        type: number
+  PremiumProduct:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+        minimum: 0
+      thumbnail:
+        type: string
+      code:
+        type: string
+      stock:
+        type: number
+        minimum: 0
+      category:
+        type: string
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization

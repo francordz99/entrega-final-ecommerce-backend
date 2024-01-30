@@ -1,0 +1,140 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Authentication API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /login:
+    get:
+      summary: "Renderizar la página de inicio de sesión"
+      tags:
+        - "Auth"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Página de inicio de sesión renderizada correctamente"
+  /register:
+    get:
+      summary: "Renderizar la página de registro"
+      tags:
+        - "Auth"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Página de registro renderizada correctamente"
+    post:
+      summary: "Registro de usuario"
+      tags:
+        - "Auth"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: "Datos de registro de usuario"
+          schema:
+            $ref: "#/definitions/UserInput"
+      responses:
+        "200":
+          description: "Usuario registrado correctamente, redirigido a la página de inicio de sesión"
+  /logout:
+    get:
+      summary: "Cerrar sesión"
+      tags:
+        - "Auth"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Sesión cerrada correctamente, redirigido a la página de inicio de sesión"
+  /resetPassword:
+    get:
+      summary: "Renderizar la página de restablecimiento de contraseña"
+      tags:
+        - "Auth"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Página de restablecimiento de contraseña renderizada correctamente"
+    post:
+      summary: "Solicitar restablecimiento de contraseña"
+      tags:
+        - "Auth"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: email
+          description: "Correo electrónico del usuario para restablecer la contraseña"
+          schema:
+            $ref: "#/definitions/EmailInput"
+      responses:
+        "200":
+          description: "Correo de restablecimiento de contraseña enviado correctamente"
+  /resetPasswordStepTwo:
+    get:
+      summary: "Renderizar la página de cambio de contraseña"
+      tags:
+        - "Auth"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Página de cambio de contraseña renderizada correctamente"
+    post:
+      summary: "Cambiar la contraseña después de restablecimiento"
+      tags:
+        - "Auth"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: newPassword
+          description: "Nueva contraseña"
+          type: string
+        - in: body
+          name: confirmNewPassword
+          description: "Confirmar la nueva contraseña"
+          type: string
+        - in: body
+          name: token
+          description: "Token de restablecimiento de contraseña"
+          type: string
+      responses:
+        "200":
+          description: "Contraseña cambiada con éxito, redirigido a la página de inicio de sesión"
+definitions:
+  UserInput:
+    type: object
+    properties:
+      nombre:
+        type: string
+      apellido:
+        type: string
+      sexo:
+        type: string
+      edad:
+        type: number
+        minimum: 0
+      email:
+        type: string
+      celular:
+        type: number
+      password:
+        type: string
+  EmailInput:
+    type: object
+    properties:
+      email:
+        type: string
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization

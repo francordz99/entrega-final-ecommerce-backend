@@ -1,0 +1,58 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Chat API"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /chat:
+    get:
+      summary: "Obtener mensajes del chat"
+      tags:
+        - "Messages"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Mensajes del chat obtenidos correctamente"
+  /chat/send:
+    post:
+      summary: "Enviar mensaje al chat"
+      tags:
+        - "Messages"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: "Contenido del mensaje"
+          type: object
+          required: true
+          properties:
+            nick:
+              type: string
+            contenido:
+              type: string
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: "Mensaje enviado al chat con éxito"
+definitions:
+  Message:
+    type: object
+    properties:
+      sender:
+        type: string
+      content:
+        type: string
+      timestamp:
+        type: string
+        format: date-time
+securityDefinitions:
+  tokenAuth:
+    type: apiKey
+    in: header
+    name: Authorization
