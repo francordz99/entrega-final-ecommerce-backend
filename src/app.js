@@ -28,7 +28,7 @@ import { swaggerSpecs } from "./config/swaggerConfig.js";
 // Express & Socket
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const { io, server } = configureSocket(app);
 
 // Middlewares
