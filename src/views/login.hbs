@@ -12,6 +12,11 @@
     <div class="container mt-5">
         <div class="card p-4">
             <h2 class="text-center">Iniciar Sesión</h2>
+            {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {{/if}}
             <form action="/login" method="post">
                 <div class="form-group">
                     <label for="email">Email:</label>

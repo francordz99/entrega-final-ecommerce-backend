@@ -53,14 +53,15 @@ const authController = {
                 logger.info(`Usuario inició sesión: ${user.email}`);
                 res.redirect(`/?token=${token}`);
             } else {
-                logger.error('Error en inicio de sesión: Credenciales no válidas');
-                authErrors.loginError();
+                res.render('login', { error: 'Correo o contraseña incorrectos' });
             }
         } catch (error) {
             logger.error(`Error en inicio de sesión: ${error.message}`);
-            authErrors.loginServerError(error.message);
+            res.render('login', { error: 'Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.' });
         }
     },
+
+
 
     logout: (req, res) => {
         res.cookie('token', '', { expires: new Date(0), httpOnly: true });
