@@ -151,11 +151,80 @@
                 <label for="code" class="form-label">Código del Producto a Eliminar:</label>
                 <input type="text" id="code" name="code" class="form-control" required>
 
-                <button type="submit" class="btn btn-primary mt-3">Eliminar Producto</button>
+                <button type="submit" class="btn btn-danger mt-3">Eliminar Producto</button>
             </form>
         </section>
 
+        <section>
+            <h3>Eliminar Usuarios Inactivos</h3>
+            <form method="post" action="/admin/deleteInactive">
+                <button type="submit" class="btn btn-danger mt-3">Eliminar</button>
+            </form>
+        </section>
+
+        <section class="get-all-users mt-4">
+            <h3>Mostrar Todos los Usuarios</h3>
+            <form method="get" action="/admin/getAllUsers">
+                <button type="submit" class="btn btn-primary mt-3">Traer Usuarios</button>
+            </form>
+            <div class="user-table mt-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Rol</th>
+                            <th>Correo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr>
+                            <td>{{this.nombre}}</td>
+                            <td>{{this.apellido}}</td>
+                            <td>{{this.role}}</td>
+                            <td>{{this.email}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="search-user-form mt-4">
+            <h3>Buscar Usuario por Correo Electrónico</h3>
+            <form method="post" action="/admin/findUser">
+                <label for="email" class="form-label">Correo Electrónico:</label>
+                <input type="text" id="email" name="email" class="form-control" required>
+                <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+            </form>
+        </section>
+
+        <section class="user-details mt-4">
+            {{#if user}}
+            <h3>Detalles del Usuario</h3>
+            <p><strong>Nombre:</strong> {{user.nombre}}</p>
+            <p><strong>Apellido:</strong> {{user.apellido}}</p>
+            <p><strong>Rol:</strong> {{user.role}}</p>
+            <p><strong>Correo Electrónico:</strong> {{user.email}}</p>
+            <form method="post" action="/admin/deleteUser/{{user.email}}?_method=DELETE">
+                <button type="submit" class="btn btn-danger mt-3">Eliminar Usuario</button>
+            </form>
+            {{else}}
+            <p>Usuario no encontrado.</p>
+            {{/if}}
+        </section>
+
         <section class="grant-permissions-form mt-4">
+            <h3>Revisar Documentacion Premium</h3>
+            <form method="post" action="/admin/editPermissions/checkDocuments">
+                <label for="email" class="form-label">Buscar Usuario por Correo Electrónico:</label>
+                <input type="text" id="email" name="email" class="form-control" required>
+                {{#if message}}
+                <p>{{message}}</p>
+                {{/if}}
+                <button type="submit" class="btn btn-primary mt-3">Revisar Documentación</button>
+            </form>
             <h3>Dar o Quitar Permisos de Administración</h3>
             <form method="post" action="/admin/editPermissions?_method=PUT">
                 <label for="email" class="form-label">Correo Electrónico:</label>

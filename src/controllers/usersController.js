@@ -118,10 +118,6 @@ const usersController = {
 
             user.documents = documentsArray;
 
-            if (documentsArray.length === 3 && user.role !== 'premium') {
-                user.role = 'premium';
-            }
-
             await user.save();
 
             res.status(200).render('sendfiles', { successMessage: 'Documentos subidos con éxito.' });

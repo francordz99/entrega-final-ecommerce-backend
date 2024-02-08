@@ -52,6 +52,36 @@ const MailingService = {
             </div>`
         });
     },
+    sendProductDeletedEmail: async (userEmail, productInfo) => {
+        try {
+            const { title, description, price, thumbnail, code, stock, category } = productInfo;
+
+            const result = await transporter.sendMail({
+                from: config.nodemailer.gmaccount,
+                to: userEmail,
+                subject: "Producto Eliminado - E-Commerce TurboCenter",
+                html: `
+                    <p>Estimado usuario premium,</p>
+                    <p>Le informamos que el siguiente producto ha sido eliminado de nuestra plataforma:</p>
+                    <ul>
+                        <li><strong>Título:</strong> ${title}</li>
+                        <li><strong>Descripción:</strong> ${description}</li>
+                        <li><strong>Precio:</strong> ${price}</li>
+                        <li><strong>Imagen:</strong> <img src="${thumbnail}" alt="Thumbnail"></li>
+                        <li><strong>Código:</strong> ${code}</li>
+                        <li><strong>Stock:</strong> ${stock}</li>
+                        <li><strong>Categoría:</strong> ${category}</li>
+                    </ul>
+                    <p>Lamentamos los inconvenientes. Si necesita más información, no dude en contactarnos.</p>
+                `,
+            });
+
+            return { success: true, result };
+        } catch (error) {
+            logger.error('Error al enviar el correo electrónico al usuario premium:', error);
+            return { success: false, error: 'Hubo un error al enviar el correo electrónico al usuario premium' };
+        }
+    },
 };
 
 export default MailingService;
