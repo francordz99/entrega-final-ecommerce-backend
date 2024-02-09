@@ -82,6 +82,44 @@ const MailingService = {
             return { success: false, error: 'Hubo un error al enviar el correo electrónico al usuario premium' };
         }
     },
+    sendAccountDeletedEmail: async (userEmail) => {
+        try {
+            const result = await transporter.sendMail({
+                from: config.nodemailer.gmaccount,
+                to: userEmail,
+                subject: "Cuenta Eliminada - E-Commerce TurboCenter",
+                html: `
+                    <p>Estimado usuario,</p>
+                    <p>Le informamos que su cuenta ha sido eliminada de nuestra plataforma.</p>
+                    <p>Si tiene alguna pregunta o necesita más información, no dude en contactarnos.</p>
+                `,
+            });
+
+            return { success: true, result };
+        } catch (error) {
+            logger.error('Error al enviar el correo electrónico de cuenta eliminada:', error);
+            return { success: false, error: 'Hubo un error al enviar el correo electrónico de cuenta eliminada' };
+        }
+    },
+    sendAccountDeletedInactiveEmail: async (userEmail) => {
+        try {
+            const result = await transporter.sendMail({
+                from: config.nodemailer.gmaccount,
+                to: userEmail,
+                subject: "Cuenta Eliminada por Inactividad - E-Commerce TurboCenter",
+                html: `
+                    <p>Estimado usuario,</p>
+                    <p>Le informamos que su cuenta ha sido eliminada de nuestra plataforma debido a la inactividad.</p>
+                    <p>Si necesita más información o desea reactivar su cuenta, no dude en contactarnos.</p>
+                `,
+            });
+
+            return { success: true, result };
+        } catch (error) {
+            logger.error('Error al enviar el correo electrónico de cuenta eliminada por inactividad:', error);
+            return { success: false, error: 'Hubo un error al enviar el correo electrónico de cuenta eliminada por inactividad' };
+        }
+    }
 };
 
 export default MailingService;

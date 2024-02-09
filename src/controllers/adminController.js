@@ -168,10 +168,16 @@ const adminController = {
         try {
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            const inactiveUsers = await User.find({ last_connection: { $lt: twoDaysAgo } });
+            const userEmails = inactiveUsers.map(user => user.email);
             const result = await User.deleteMany({ last_connection: { $lt: twoDaysAgo } });
+
             if (result.deletedCount > 0) {
                 const successMessage = `Se han eliminado ${result.deletedCount} usuarios inactivos con éxito.`;
                 logger.info(successMessage);
+                for (const userEmail of userEmails) {
+                    await MailingService.sendAccountDeletedInactiveEmail(userEmail);
+                }
                 res.render('admin', { successMessage });
             } else {
                 const errorMessage = 'No se encontraron usuarios inactivos para eliminar.';
@@ -208,13 +214,13 @@ const adminController = {
         try {
             const userEmail = req.params.email;
             await User.findOneAndDelete({ email: userEmail });
+            await MailingService.sendAccountDeletedEmail(userEmail);
             res.redirect('/admin');
         } catch (error) {
             console.error(`Error en deleteUser: ${error}`);
             res.status(500).send('Ha ocurrido un error al eliminar al usuario.');
         }
     }
-
 
 
 

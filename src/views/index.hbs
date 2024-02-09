@@ -64,6 +64,10 @@
 
     <main class="container mt-4">
         <section>
+            {{#if error}}
+            <p style="color: red;">{{error}}</p>
+            {{/if}}
+
             <h2>Promociones</h2>
 
             <div class="card mb-3">

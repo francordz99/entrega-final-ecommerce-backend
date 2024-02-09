@@ -27,7 +27,8 @@ const checkAdminRole = async (req, res, next) => {
             next();
         } else {
             logger.warn('Usuario no tiene el rol de administrador. Acceso no autorizado.');
-            res.status(403).send("Acceso No Autorizado");
+            res.render('index', { error: "Acceso No Autorizado" });
+
         }
     } catch (error) {
         logger.error(`Error al verificar el rol de administrador: ${error.message}`);
@@ -58,7 +59,7 @@ const checkUserRole = async (req, res, next) => {
             next();
         } else {
             logger.warn('Usuario no tiene el rol de usuario. Acceso no autorizado.');
-            res.status(403).send("Acceso No Autorizado");
+            res.render('index', { error: "Acceso No Autorizado" });
         }
     } catch (error) {
         logger.error(`Error al verificar el rol de usuario: ${error.message}`);
@@ -89,7 +90,7 @@ const checkPremiumRole = async (req, res, next) => {
             next();
         } else {
             logger.warn('Usuario no tiene el rol premium. Acceso no autorizado.');
-            res.status(403).send("Acceso No Autorizado");
+            res.render('index', { error: "Acceso No Autorizado" });
         }
     } catch (error) {
         logger.error(`Error al verificar el rol premium: ${error.message}`);
